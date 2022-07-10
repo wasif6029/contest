@@ -10,7 +10,9 @@
       "deque": "cpp",
       "string": "cpp",
       "vector": "cpp",
-      "bitset": "cpp"
+      "bitset": "cpp",
+      "iomanip": "cpp",
+      "chrono": "cpp"
     }
   }
 }

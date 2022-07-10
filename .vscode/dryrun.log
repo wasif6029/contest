@@ -1,0 +1,6 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory '/home/wasif/all_codes/c++/contest'
+make: Leaving directory '/home/wasif/all_codes/c++/contest'
+ 
+make: *** No targets specified and no makefile found.  Stop.
+

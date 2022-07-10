@@ -50,7 +50,7 @@ using namespace std;
 #define     ofk                     order_of_key
 
 
-inline      int    sci()            {int a;scanf("%lld",&a);return a;}
+inline      int    sci()            {int a;scanf("%lld",&a);return  a;}
 inline      char   scc()            {char a;scanf("%c",&a);return a;}
 inline      double scd()            {double a;scanf("%lf",&a);return a;}
 
@@ -59,7 +59,6 @@ const       int                     sml = INT_MIN;
 const       int                     mod = 100000007;
 
 typedef tree<int, null_type, less<int>, rb_tree_tag, tree_order_statistics_node_update> pbds;
-
 
 int  x4[] = {1, 0, -1, 0};
 int  y4[] = {0, 1, 0, -1};
@@ -125,7 +124,8 @@ void divisors(vii &v,int n)
     sort(all(v));
 }
 
-int setBitNumber(int n)
+
+int getmsb(int n)
 {
     if (n == 0)
         return 0;
@@ -137,47 +137,7 @@ int setBitNumber(int n)
         msb++;
     }
  
-    return msb;
-}
-
-vector <int> prime; // Stores generated primes
-char sieve[10000000]; // 0 means prime
-void primeSieve ( int n ) {
-    sieve[0] = sieve[1] = 1; // 0 and 1 are not prime
- 
-    prime.push_back(2); // Only Even Prime
-    for ( int i = 4; i <= n; i += 2 ) sieve[i] = 1; // Remove multiples of 2
- 
-    int sqrtn = sqrt ( n );
-    for ( int i = 3; i <= sqrtn; i += 2 ) {
-        if ( sieve[i] == 0 ) {
-            for ( int j = i * i; j <= n; j += 2 * i ) sieve[j] = 1;
-        }
-    }
- 
-    for ( int i = 3; i <= n; i += 2 ) if ( sieve[i] == 0 ) prime.push_back(i);
-}
-
-int SOD( int n ) {
-    int res = 1;
-    int sqrtn = sqrt ( n );
-    for ( int i = 0; i < prime.size() && prime[i] <= sqrtn; i++ ) {
-        if ( n % prime[i] == 0 ) {
-            int tempSum = 1; // Contains value of (p^0+p^1+...p^a)
-            int p = 1;
-            while ( n % prime[i] == 0 ) {
-                n /= prime[i];
-                p *= prime[i];
-                tempSum += p;
-            }
-            sqrtn = sqrt ( n );
-            res *= tempSum;
-        }
-    }
-    if ( n != 1 ) {
-        res *= ( n + 1 ); // Need to multiply (p^0+p^1)
-    }
-    return res;
+    return (msb);
 }
 
 void fileoj()
@@ -187,23 +147,96 @@ void fileoj()
     #endif
 }
 
+int call(vii &gaps,int srch)
+{
+    int h = gaps.size();
+    int l = 0;
+    int ans = -1;
+    while(l<h)
+    {
+        int mid = (l+h)>>1;
+        if(gaps[mid]<=srch)
+        {
+            ans = mid;
+            l = mid+1;
+        }
+        else
+        {
+            h = mid;
+        }
+    }
+    return ans;
+}
+
+bool visited[200000];
+vector<int>grp[200000];
+map<int,vii>mp;
+int n;
+int dfs(int src){
+    // wat1(4,src)
+    visited[src] = true;
+    int cnt  = 1;
+    for(int i=0; i<grp[src].size(); i++){
+        int nd = grp[src][i];
+        if(visited[nd] == false){
+            int vl = dfs(nd);
+            mp[src].push_back(vl);
+            cnt += vl;
+
+        }
+    }
+    if(n-cnt!=0)mp[src].push_back(n-cnt);
+    // wat1(4,src);
+    // printv(mp[src]);
+    return cnt;
+}
+
+map<int,int>res;
+int calc(int nd)
+{
+    int sum1 = 0;
+    int sum2 = 0;
+    for(int val:mp[nd])
+    {
+        sum1+=val;
+        sum2+=val*val;
+    }
+    int sum3  = sum1*sum1;
+    int sum4 = (sum3-sum2)>>1;
+    return sum4+sum1;
+
+}
 int32_t main()
 {
     // file_io;
-
+    fast_io;
     int t = 1;
-    cin>>t;
+    // cin>>t;
     for (int tc = 1; tc <= t; tc++)
     {
-        int n,m;
-        cin>>n>>m;
-        int sum = 0;
-        while(n--)
-        {
-            int a;
-            cin>>a;
-            sum+=a;
+        cin>>n;
+
+        for(int i=0; i<n-1; i++){
+            int u, v; cin>>u>>v;
+            grp[u].pb(v);
+            grp[v].pb(u);
         }
-        cout<<"Case #"<<tc<<": "<<sum%m<<nl;
+
+        dfs(1);
+        int q ;
+        cin>>q;
+        while(q--)
+        {
+            int qr;
+            cin>>qr;
+            if(res[qr])
+            {
+                cout<<res[qr]<<nl;
+                continue;
+            }
+            res[qr] = calc(qr);
+            cout<<res[qr]<<nl;
+        }
+
     }
 }

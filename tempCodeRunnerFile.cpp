@@ -132,6 +132,8 @@ void fileoj()
     #endif
 }
 
+
+
 int call(string s,int x)
 {
     // if(s=="00011001100")return 0;

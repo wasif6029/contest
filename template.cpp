@@ -125,6 +125,21 @@ void divisors(vii &v,int n)
 }
 
 
+int getmsb(int n)
+{
+    if (n == 0)
+        return 0;
+ 
+    int msb = 0;
+    n = n / 2;
+    while (n != 0) {
+        n = n / 2;
+        msb++;
+    }
+ 
+    return (msb);
+}
+
 void fileoj()
 {
     #ifndef ONLINE_JUDGE
@@ -136,8 +151,9 @@ int32_t main()
 {
     file_io;
     int t = 1;
-    //cin>>t;
+    cin>>t;
     for (int tc = 1; tc <= t; tc++)
     {
+        
     }
 }
